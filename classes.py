@@ -11,7 +11,7 @@ class Sprite:
         self.scale = self.frame.height / self.img.get_height() * size_in_frame
         self.display_height = int(self.img.get_height() * self.scale)
         self.display_width = int(self.img.get_width() * self.scale)
-        self.img = pygame.transform.scale(self.img, (self.display_width, self.display_height))
+        self.img = self.process_img(self.img)
         self.frame.sprite = self
         self.attach_x = attach_x
         self.attach_y = attach_y
@@ -19,6 +19,12 @@ class Sprite:
         self.x = self.get_initial_display_coordinates()[0]
         self.y = self.get_initial_display_coordinates()[1]
     
+    def process_img(self, img):
+        transformed_display_height = int(img.get_height() * self.scale)
+        transformed_display_width = int(img.get_width() * self.scale)
+        transformed_img = pygame.transform.scale(img, (transformed_display_width, transformed_display_height))
+        return transformed_img
+
     def get_initial_display_coordinates(self):
         frame_align = self.frame.align
         if frame_align == "bottom":
@@ -48,8 +54,8 @@ class Flower(Sprite):
             self.display_water_zone_x_right = self.frame.align_x - (self.display_width/2 * self.attach_x) + (self.water_zone_x_right * self.scale)
         return (self.display_water_zone_y_upper, self.display_water_zone_y_lower, self.display_water_zone_x_left, self.display_water_zone_x_right)
     
-    def in_water_zone(self, x, y):
-        if x <= self.display_water_zone_x_right and x >= self.display_water_zone_x_left and y <= self.display_water_zone_y_lower and y >= self.display_water_zone_y_upper:
+    def in_water_zone(self, point):
+        if point[0] <= self.display_water_zone_x_right and point[0] >= self.display_water_zone_x_left and point[1] <= self.display_water_zone_y_lower and point[1] >= self.display_water_zone_y_upper:
             return True
         else:
             return False
@@ -93,6 +99,12 @@ class Frame:
 
 # can move
 class WateringCan(Sprite):
-    def __init__(self, img, frame, size_in_frame, attach_x = 1, attach_y = 1):
+    def __init__(self, img, frame, size_in_frame, watering_img, watering_point, attach_x = 1, attach_y = 1):
         Sprite.__init__(self, img, frame, size_in_frame, attach_x, attach_y, True)
-        
+        self.watering = False
+        self.watering_img = pygame.image.load(watering_img)
+        self.watering_img = self.process_img(self.watering_img)
+        self.watering_point = (int(watering_point[0] * self.scale), int(watering_point[1] * self.scale))
+
+    def get_watering_point(self):
+        return (self.x + self.watering_point[0], self.y + self.watering_point[1])    
