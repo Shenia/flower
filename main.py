@@ -14,9 +14,13 @@ def main():
     screen_frame = Frame(height = DISPLAY_HEIGHT, width = DISPLAY_WIDTH, background = None, sprite_type = "background")
     screen_frame.set_align(align = "bottom", align_x = DISPLAY_WIDTH/2, align_y = DISPLAY_HEIGHT * 6/7)
     background = Background("img/table.png", screen_frame, size_in_frame = 0.325, num_frames = 2)
-    background_frame = Frame(height = 110, width = 56, background = None, sprite_type = "flower")
+    background_frame = Frame(height = 110, width = 56, background = background, sprite_type = "flower")
     background_frame.set_align(align = "bottom", align_x = 200, align_y = 180)
+    # water_can_frame = Frame(height = )
     flower = Flower("img/flower_1.png", background_frame, size_in_frame = 1.15, attach_x = 2 * 16/25)
+    flower.set_water_zone(y_upper = 473 - 155, y_lower = 473 - 115, x_left = 145, x_right = 265)
+    test = pygame.image.load("img/test.png")
+
     x = 0
     y = 0
     x_change = 0
@@ -39,18 +43,20 @@ def main():
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     x_change = 0
-                    print(x)
+                    print((x, y))
+                    print(flower.in_water_zone(x, y))
                 elif event.key == pygame.K_UP or event.key == pygame.K_DOWN:
                     y_change = 0
-                    print(y)
+                    print((x, y))
+                    print(flower.in_water_zone(x, y))
 
         x = x + x_change
         y = y + y_change
 
         gameDisplay.fill(BACKGROUND_COLOR)
-        gameDisplay.blit(background.img, background.get_display_coordinates())
-        gameDisplay.blit(flower.img, flower.get_display_coordinates())
-        # gameDisplay.blit(flower.img, (x, y))
+        gameDisplay.blit(background.img, background.get_initial_display_coordinates())
+        gameDisplay.blit(flower.img, flower.get_initial_display_coordinates())
+        gameDisplay.blit(test, (x, y))
 
         pygame.display.update()
         clock.tick(60)
