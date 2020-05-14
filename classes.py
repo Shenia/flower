@@ -94,5 +94,5 @@ class Frame:
 # can move
 class WateringCan(Sprite):
     def __init__(self, img, frame, size_in_frame, attach_x = 1, attach_y = 1):
-        Sprite.__init__(self, img, frame, size_in_frame, attach_x, attach_y, False)
+        Sprite.__init__(self, img, frame, size_in_frame, attach_x, attach_y, True)
         
