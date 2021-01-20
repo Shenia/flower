@@ -3,14 +3,14 @@ import random
 from classes import Flower, Background, Frame, WateringCan
 from config import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_COLOR
 
-pygame.init()
+def main():  
+    pygame.init()
 
-# set frame
-gameDisplay = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
-pygame.display.set_caption("Flower")
-clock = pygame.time.Clock()
-
-def main():
+    # set frame
+    gameDisplay = pygame.display.set_mode((DISPLAY_WIDTH, DISPLAY_HEIGHT))
+    pygame.display.set_caption("Flower")
+    clock = pygame.time.Clock()
+    
     screen_frame = Frame(height = DISPLAY_HEIGHT, width = DISPLAY_WIDTH, background = None, sprite_type = "background")
     screen_frame.set_align(align = "bottom", align_x = DISPLAY_WIDTH/2, align_y = DISPLAY_HEIGHT * 6/7)
     background = Background("img/table.png", screen_frame, size_in_frame = 0.325, num_frames = 2)
